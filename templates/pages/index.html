@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+{%load leaflet_tags%}
+<head>
+    {%leaflet_js%}
+    {%leaflet_css%}
+    <title>Getir WebGIS</title>
+    <style type="text/css">
+        #gis {width: 80%;height: 7000px;}
+    </style>
+</head>
+
+<body>
+    <h3>Getir WebGIS Sener Alkan</h3>
+    <br>
+    {% leaflet_map "gis" %}
+</body>
+</html>
