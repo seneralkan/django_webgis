@@ -125,6 +125,11 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
+# Statik dosyalarinin yolunun belirlenmesi
+STATICFILES_DIRS = [
+    BASE_DIR / "static"
+]
+
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
@@ -132,10 +137,10 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 LEAFLET_CONFIG = {
     # conf here
-    'DEFAULT_CENTER': (38.32, 38.35),
+    'DEFAULT_CENTER': (39.2448406,36.2128996),
     'DEFAULT_ZOOM': 11,
     'MIN_ZOOM': 3,
     'MAX_ZOOM': 18,
-    'DEFAULT_PRECISION': 6,
+    'DEFAULT_PRECISION': 11,
     'ATTRIBUTION_PREFIX': 'Getir WebGIS Project by Leaflet',
 }

@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html>
+{% load static %}
 {%load leaflet_tags%}
 <head>
     {%leaflet_js%}
@@ -8,11 +9,62 @@
     <style type="text/css">
         #gis {width: 80%;height: 7000px;}
     </style>
+    <link rel="stylesheet" href="{%static 'leaflet_layergroupcontrol/leaflet.groupedlayercontrol.css'%}">
+    <script type="text/javascript" src="{%static 'dist/leaflet.ajax.js'%}"></script>
+    <script type="text/javascript" src="{%static 'leaflet_layergroupcontrol/leaflet.groupedlayercontrol.js'%}"></script>
 </head>
 
 <body>
     <h3>Getir WebGIS Sener Alkan</h3>
     <br>
-    {% leaflet_map "gis" %}
+    <script type="text/javascript">
+        function tr_layer(map,options){
+            var osm = '	http://{s}.tile.openstreetmap.org/{z}{y}{x}.png'
+            let dataset = new L.GeoJSON.AJAX("{% url 'county' %}", {
+                style: function colors(feature){
+                    switch (feature.properties.adm1_en){
+                        case 'MALATYA':
+                            return {
+                                color: 'yellow'
+                            };
+                        break;
+                        case 'ISTANBUL':
+                            return {
+                                color: 'purple'
+                            };
+                        break;
+                    }
+                },
+                onEachFeature: function(feature,layer){
+                    layer.bindPopup(feature.properties.adm1_en.toString())
+                }
+            });
+            let incident = new L.GeoJSON.AJAX("{% url 'incident' %}", {});
+            dataset.addTo(map);
+            incident.addTo(map);
+
+            var basemaps = {
+                Grayscale: L.tileLayer('http://{s}.tiles.wmflabs.org/bw-mapnik/{z}/{x}/{y}.png', {
+                maxZoom: 18,
+                attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+                }),
+                Streets: L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                maxZoom: 19,
+                attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+                })
+            };
+
+            var groupedOverlays = {
+                    "Layers": {
+                    "Counties": dataset,
+                    "Incident": incident
+                 }};
+
+            var layerControl = L.control.groupedLayers(basemaps, groupedOverlays);
+            map.addControl(layerControl);
+        }
+
+    </script>
+    {% leaflet_map "gis" callback="window.tr_layer" %}
 </body>
 </html>
