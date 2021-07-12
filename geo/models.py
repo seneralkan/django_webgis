@@ -28,3 +28,33 @@ class counties(models.Model):
 
     def __str__(self):
         return self.adm1_en
+
+class town(models.Model):
+    objectid = models.BigIntegerField()
+    adm2_tr = models.CharField(max_length=50)
+    adm2_en = models.CharField(max_length=50)
+    adm1_tr = models.CharField(max_length=50)
+    adm1_en = models.CharField(max_length=50)
+    adm1 = models.CharField(max_length=6)
+    pcode = models.CharField(max_length=9)
+    shape_leng = models.FloatField()
+    shape_area = models.FloatField()
+    geom = models.MultiPolygonField(srid=4326)
+
+    def __str__(self):
+        return self.adm2_en
+
+class warehouse(models.Model):
+    objectid = models.BigIntegerField()
+    adm2_tr = models.CharField(max_length=50)
+    adm2_en = models.CharField(max_length=50)
+    adm1_tr = models.CharField(max_length=50)
+    adm1_en = models.CharField(max_length=50)
+    adm1 = models.CharField(max_length=6)
+    pcode = models.CharField(max_length=9)
+    shape_leng = models.FloatField()
+    shape_area = models.FloatField()
+    geom = models.PointField(srid=4326)
+
+    def __str__(self):
+        return self.objectid
